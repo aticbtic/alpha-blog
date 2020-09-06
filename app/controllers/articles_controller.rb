@@ -6,4 +6,19 @@ class ArticlesController < ApplicationController
     def index
         @article = Article.all
     end
+    
+    def new
+        @article = Article.new
+    end
+    
+    def create
+        @article = Article.new(params.require(:article).permit(:title, :description))   
+#        render plain:@article.inspect
+        if @article.save 
+            flash[:notice] = "Article was saved succesfully"
+            redirect_to article_path(@article)
+        else
+            render 'new'
+        end
+    end
 end
